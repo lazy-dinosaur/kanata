@@ -10,4 +10,4 @@
   - [ ] layer + U,I,O,P 를 Home,Page_down, Page_up,End 로 설정
   - [ ] layer + f 를 런쳐로 설정
   - [ ] layer + space 를 언어 변경으로 설정 
-- [ ] 키보드 비활성화 버튼 추가
+- [x] 키보드 비활성화 버튼 추가
