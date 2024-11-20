@@ -39,33 +39,28 @@
   cap (tap-hold-press $tt $ht esc lctl)
   spc (tap-hold-release 280 $ht spc @nav)
 
-  a (tap-hold-release 280 $ht a lmet)
-  s (tap-hold-release 280 $ht s lalt)
-  d (tap-hold-release 280 $ht d lsft)
-  f (tap-hold-release 280 $ht f lctl)
+  a (tap-hold-release-keys 280 $ht a lmet (q w e r t g z x c v b))
+  s (tap-hold-release-keys 280 $ht s lalt (q w e r t g z x c v b))
+  d (tap-hold-release-keys 280 $ht d lsft (q w e r t g z x c v b))
+  f (tap-hold-release-keys 280 $ht f lctl (q w e r t g z x c v b))
 
-  ;;0 (tap-hold-release 280 $ht (unshift 0) lmet)
-  ;;4 (tap-hold-release 280 $ht (unshift 4) lalt)
-  ;;5 (tap-hold-release 280 $ht (unshift 5) lsft)
-  ;;6 (tap-hold-release 280 $ht (unshift 6) lctl)
+  j (tap-hold-release-keys 280 $ht j lctl (y u i o p [ ] h ' n m , . /))
+  k (tap-hold-release-keys 280 $ht k rsft (y u i o p [ ] h ' n m , . /))
+  l (tap-hold-release-keys 280 $ht l lalt (y u i o p [ ] h ' n m , . /))
+  ' (tap-hold-release-keys 280 $ht ' lmet (y u i o p [ ] h ' n m , . /))
 
-  j (tap-hold-release 280 $ht j lctl)
-  k (tap-hold-release 280 $ht k rsft)
-  l (tap-hold-release 280 $ht l lalt)
-  ' (tap-hold-release 280 $ht ' lmet)
+  lt (multi lsft ,)
+  gt (multi lsft .)
+  lp (multi lsft 9)
+  rp (multi lsft 0)
 
-  lt (unicode "<")
-  gt (unicode ">")
-  lp (unicode "(")
-  rp (unicode ")")
-
-  qt (unicode "?")
-  ex (unicode "!")
+  qt (multi lsft /)
+  ex (multi lsft 1)
 
 
   fr/ (fork @qt @ex (lsft rsft))
 
-  scln (unicode ";")
+  scln (unshift ;)
 
   fr, (fork , @scln (lsft rsft))
   fr. (fork . (multi lsft scln) (lsft rsft))
@@ -124,15 +119,17 @@
   rsn (multi _ @rsym)
   ;; nav arrows
 
-  nvl (tap-hold-release-timeout  280 $ht left lctl home)
-  nvd (tap-hold-release-timeout  280 $ht down lsft (multi lctl end))
-  nvu (tap-hold-release-timeout  280 $ht up lalt (multi lctl home))
-  nvr (tap-hold-release-timeout  280 $ht right lmet (multi end))
+  nvl (tap-hold-release-timeout 280 $ht left lctl home)
+  nvd (tap-hold-release-timeout 280 $ht down lsft (multi lctl end))
+  nvu (tap-hold-release-timeout 280 $ht up lalt (multi lctl home))
+  nvr (tap-hold-release-timeout 280 $ht right lmet (multi end))
 )
 
 ;; combos
 (defalias
-
+  copy (multi lctl ins) 
+  paste (multi lsft ins)
+  cut (multi lctl x)
   ;; rmh 
   clp (tap-hold $tt $ht @frlp (multi lctl lsft))
   crp (tap-hold $tt $ht @frrp (multi lsft lalt))
@@ -142,64 +139,100 @@
   cm, (tap-hold $tt $ht [ [)
   c,. (tap-hold $tt $ht ] ])
 
+  ;; lth 
+  cwe (tap-hold $tt $ht esc esc)
+  cer (tap-hold $tt $ht ret ret)
+
   ;; lmh 
   csd (tap-hold $tt $ht tab   (multi lalt lsft))
   cdf (tap-hold $tt $ht han   (multi lsft lctl))
   cas (tap-hold $tt $ht @sft  (multi lmet lalt))
-)
-
-(defchordsv2-experimental
-  ;; rmh 
-  (j k)  @clp          25 first-release (base nav)
-  (k l)  @crp          25 first-release (base nav)
-  (l ;)  @cl;          25 first-release (base)
-
-  ;; rbh 
-  (m ,)  @cm,          25 first-release (base)
-  (, .)  @c,.          25 first-release (base)
-
-
-  ;; lth 
-  (w e)  esc           25 first-release (base)
-  (e r)  ret           25 first-release (base)
-
-  ;; lmh 
-  (a s)  @cas          25 first-release (base)
-  (s d)  @csd          25 first-release (base)
-  (d f)  @cdf          25 first-release (base)
 
   ;; lbh 
-  (x c) (multi lctl ins) 25 first-release (base)
-  (c v) (multi lsft ins) 25 first-release (base)
-  (x v) (multi lctl x)   25 first-release (base)
+  cxc (tap-hold $tt $ht @copy @copy)
+  ccv (tap-hold $tt $ht @paste @paste) 
+  cxv (tap-hold $tt $ht @cut @cut)
 
   ;; lth 
-  (u i)  bspc          25 first-release (base)
-  (i o)  del           25 first-release (base)
+  cui (tap-hold $tt $ht bspc bspc)
+  cio (tap-hold $tt $ht del del)
 
   ;; rtv
-  (y h) (unicode "^") 35 first-release (base)
-  (u j) (unicode "+") 35 first-release (base)
-  (i k) (unicode "*") 35 first-release (base)
-  (o l) (unicode "&") 35 first-release (base)
+  cyh (tap-hold $tt $ht (multi lsft 6) (multi lsft 6))
+  cuj (tap-hold $tt $ht (multi lsft =) (multi lsft =))
+  cik (tap-hold $tt $ht (multi lsft 8) (multi lsft 8))
+  col (tap-hold $tt $ht (multi lsft 7) (multi lsft 7))
 
   ;; rbv
-  (h n) (unicode "_") 35 first-release (base)
-  (j m) (unicode "-") 35 first-release (base)
-  (k ,) (unicode "/") 35 first-release (base)
-  (l .) (unicode "|") 35 first-release (base)
+  chn (tap-hold $tt $ht (multi lsft -) (multi lsft -))
+  cjm (tap-hold $tt $ht (unshift -) (unshift -))
+  ck, (tap-hold $tt $ht (unshift /) (unshift /))
+  cl. (tap-hold $tt $ht (multi lsft \) (multi lsft \))
 
   ;;ltv
-  (w s) (unicode "@") 35 first-release (base)
-  (e d) (unicode "#") 35 first-release (base)
-  (r f) (unicode "$") 35 first-release (base)
-  (t g) (unicode "%") 35 first-release (base)
+  cws (tap-hold $tt $ht (multi lsft 2) (multi lsft 2))
+  ced (tap-hold $tt $ht (multi lsft 3) (multi lsft 3))
+  crf (tap-hold $tt $ht (multi lsft 4) (multi lsft 4))
+  ctg (tap-hold $tt $ht (multi lsft 5) (multi lsft 5))
 
   ;; lbv
-  (s x) (unicode "`") 35 first-release (base)
-  (d c) (unicode "\") 35 first-release (base)
-  (f v) (unicode "=") 35 first-release (base)
-  (g b) (unicode "~") 35 first-release (base)
+  csx (tap-hold $tt $ht (unshift `) (unshift `))
+  cdc (tap-hold $tt $ht (unshift \) (unshift \))
+  cfv (tap-hold $tt $ht (unshift =) (unshift =))
+  cgb (tap-hold $tt $ht (multi lsft `) (multi lsft `))
+)
+
+(defchordsv2
+  ;; rmh 
+  (j k)  @clp         25 first-release (base nav)
+  (k l)  @crp         25 first-release (base nav)
+  (l ;)  @cl;         25 first-release (base)
+
+  ;; rbh 
+  (m ,)  @cm,         25 first-release (base)
+  (, .)  @c,.         25 first-release (base)
+
+  ;; lth 
+  (w e)  @cwe         25 first-release (base)
+  (e r)  @cer         25 first-release (base)
+
+  ;; lmh 
+  (a s)  @cas         25 first-release (base)
+  (s d)  @csd         25 first-release (base)
+  (d f)  @cdf         25 first-release (base)
+
+  ;; lbh 
+  (x c) @cxc          25 first-release (base)
+  (c v) @ccv          25 first-release (base)
+  (x v) @cxv          25 first-release (base)
+
+  ;; lth 
+  (u i) @cui          25 first-release (base)
+  (i o) @cio          25 first-release (base)
+
+  ;; rtv
+  (y h) @cyh  35 first-release (base)
+  (u j) @cuj  35 first-release (base)
+  (i k) @cik  35 first-release (base)
+  (o l) @col  35 first-release (base)
+
+  ;; rbv
+  (h n) @chn 35 first-release (base)
+  (j m) @cjm 35 first-release (base)
+  (k ,) @ck, 35 first-release (base)
+  (l .) @cl. 35 first-release (base)
+
+  ;;ltv
+  (w s) @cws 35 first-release (base)
+  (e d) @ced 35 first-release (base)
+  (r f) @crf 35 first-release (base)
+  (t g) @ctg 35 first-release (base)
+
+  ;; lbv
+  (s x) @csx  35 first-release (base)
+  (d c) @cdc  35 first-release (base)
+  (f v) @cfv  35 first-release (base)
+  (g b) @cgb  35 first-release (base)
 )
 
 (defsrc
@@ -217,9 +250,9 @@
   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  del
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    bspc del  \
-  @cap @a   @s   @d   @f   g    h    @j   @k   @l   @'   ret  ret
+  @cap @a   @s   @d   @f   g    h    @j   @k   @l   @'   han  ret
   @sft z    x    c    v    b    n    m    @fr, @fr. @fr/ @sft
-  lctl lmet @nav           spc            @hnm lctl
+  lctl lmet @sft           @spc           @hnm lctl
 )
 
 (deflayer nav
