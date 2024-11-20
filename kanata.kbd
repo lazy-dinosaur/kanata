@@ -140,8 +140,8 @@
   c,. (tap-hold $tt $ht ] ])
 
   ;; lth 
-  cwe (tap-hold $tt $ht esc esc)
-  cer (tap-hold $tt $ht ret ret)
+  cwe (tap-hold $tt $ht (multi @rsym esc) (multi @rsym esc))
+  cer (tap-hold $tt $ht (multi @rsym ret) (multi @rsym ret))
 
   ;; lmh 
   csd (tap-hold $tt $ht tab   (multi lalt lsft))
