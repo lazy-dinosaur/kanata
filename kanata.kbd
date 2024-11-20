@@ -44,21 +44,35 @@
   d (tap-hold-release 280 $ht d lsft)
   f (tap-hold-release 280 $ht f lctl)
 
+  ;;0 (tap-hold-release 280 $ht (unshift 0) lmet)
+  ;;4 (tap-hold-release 280 $ht (unshift 4) lalt)
+  ;;5 (tap-hold-release 280 $ht (unshift 5) lsft)
+  ;;6 (tap-hold-release 280 $ht (unshift 6) lctl)
+
   j (tap-hold-release 280 $ht j lctl)
   k (tap-hold-release 280 $ht k rsft)
   l (tap-hold-release 280 $ht l lalt)
   ' (tap-hold-release 280 $ht ' lmet)
 
-  lt S-,
-  gt S-.
+  lt (unicode "<")
+  gt (unicode ">")
+  lp (unicode "(")
+  rp (unicode ")")
 
-  scln (unshift ;)
+  qt (unicode "?")
+  ex (unicode "!")
+
+
+  fr/ (fork @qt @ex (lsft rsft))
+
+  scln (unicode ";")
 
   fr, (fork , @scln (lsft rsft))
   fr. (fork . (multi lsft scln) (lsft rsft))
 
-  frlp (fork (multi lsft 9) @lt (lsft rsft))
-  frrp (fork (multi lsft 0) @gt (lsft rsft))
+  frlp (fork @lp @lt (lsft rsft))
+
+  frrp (fork @rp @gt (lsft rsft))
 
 
   = (unshift =)
@@ -85,7 +99,6 @@
   )
 
   tsym (multi
-    (on-press press-virtualkey vnum)
     (on-press press-virtualkey vsft)
     (on-release release-virtualkey vnum)
     (on-release release-virtualkey vsft)
@@ -104,43 +117,89 @@
   hnm (tap-hold-press $tt $ht @pnm @num)
   nnm (tap-hold-press $tt $ht @psf @tsym)
 
+  snm (fork @nnm @rsym (lsft rsft))
+
   bck (multi _ (layer-switch code))
 
   rsn (multi _ @rsym)
+  ;; nav arrows
+
+  nvl (tap-hold-release-timeout  280 $ht left lctl home)
+  nvd (tap-hold-release-timeout  280 $ht down lsft (multi lctl end))
+  nvu (tap-hold-release-timeout  280 $ht up lalt (multi lctl home))
+  nvr (tap-hold-release-timeout  280 $ht right lmet (multi end))
 )
 
+;; combos
 (defalias
+
+  ;; rmh 
   clp (tap-hold $tt $ht @frlp (multi lctl lsft))
   crp (tap-hold $tt $ht @frrp (multi lsft lalt))
-  csd (tap-hold $tt $ht tab   (multi lalt lsft))
-  cdf (tap-hold $tt $ht han   (multi lsft lctl))
   cl; (tap-hold $tt $ht @sft  (multi rmet lalt))
+
+  ;; rbh 
   cm, (tap-hold $tt $ht [ [)
   c,. (tap-hold $tt $ht ] ])
+
+  ;; lmh 
+  csd (tap-hold $tt $ht tab   (multi lalt lsft))
+  cdf (tap-hold $tt $ht han   (multi lsft lctl))
+  cas (tap-hold $tt $ht @sft  (multi lmet lalt))
 )
 
 (defchordsv2-experimental
-  (j k)  @clp          30 all-released (nav)
-  (k l)  @crp          30 all-released (nav)
-  (m ,)  @cm,          30 all-released ()
-  (, .)  @c,.          30 all-released ()
+  ;; rmh 
+  (j k)  @clp          25 first-release (base nav)
+  (k l)  @crp          25 first-release (base nav)
+  (l ;)  @cl;          25 first-release (base)
 
-  (w e)  esc           30 all-released ()
-  (e r)  ret           30 all-released ()
-  (s d)  @csd          30 all-released ()
-  (d f)  @cdf          30 all-released ()
+  ;; rbh 
+  (m ,)  @cm,          25 first-release (base)
+  (, .)  @c,.          25 first-release (base)
 
-  (l ;)  @cl;          30 all-released ()
 
-  (u i)  bspc           30 all-released ()
-  (i o)  del           30 all-released ()
+  ;; lth 
+  (w e)  esc           25 first-release (base)
+  (e r)  ret           25 first-release (base)
 
-  (i j) +              30 all-released ()
-  (m k) (unshift -)    30 all-released ()
-  (j n) (multi lsft -) 30 all-released ()
+  ;; lmh 
+  (a s)  @cas          25 first-release (base)
+  (s d)  @csd          25 first-release (base)
+  (d f)  @cdf          25 first-release (base)
 
-  (d c) @=             30 all-released ()
-  (f v) (multi lsft `) 30 all-released ()
+  ;; lbh 
+  (x c) (multi lctl ins) 25 first-release (base)
+  (c v) (multi lsft ins) 25 first-release (base)
+  (x v) (multi lctl x)   25 first-release (base)
+
+  ;; lth 
+  (u i)  bspc          25 first-release (base)
+  (i o)  del           25 first-release (base)
+
+  ;; rtv
+  (y h) (unicode "^") 35 first-release (base)
+  (u j) (unicode "+") 35 first-release (base)
+  (i k) (unicode "*") 35 first-release (base)
+  (o l) (unicode "&") 35 first-release (base)
+
+  ;; rbv
+  (h n) (unicode "_") 35 first-release (base)
+  (j m) (unicode "-") 35 first-release (base)
+  (k ,) (unicode "/") 35 first-release (base)
+  (l .) (unicode "|") 35 first-release (base)
+
+  ;;ltv
+  (w s) (unicode "@") 35 first-release (base)
+  (e d) (unicode "#") 35 first-release (base)
+  (r f) (unicode "$") 35 first-release (base)
+  (t g) (unicode "%") 35 first-release (base)
+
+  ;; lbv
+  (s x) (unicode "`") 35 first-release (base)
+  (d c) (unicode "\") 35 first-release (base)
+  (f v) (unicode "=") 35 first-release (base)
+  (g b) (unicode "~") 35 first-release (base)
 )
 
 (defsrc
@@ -157,19 +216,19 @@
   @dkb
   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  del
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
-  tab  q    w    e    r    t    y    u    i    o    p    \    del  \
-  @cap @a   @s   @d   @f   g    h    @j   @k   @l   @'   `  ret
-  @sft z    x    c    v    b    n    m    @fr, @fr. /    han
-  lctl lmet lalt           @spc           @hnm lctl
+  tab  q    w    e    r    t    y    u    i    o    p    bspc del  \
+  @cap @a   @s   @d   @f   g    h    @j   @k   @l   @'   ret  ret
+  @sft z    x    c    v    b    n    m    @fr, @fr. @fr/ @sft
+  lctl lmet @nav           spc            @hnm lctl
 )
 
 (deflayer nav
   _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    pgup home end  pgdn _    _    _    
-  _    _    _    _    _    _    left down up   rght han  _    _    
-  _    _    _    _    _    _    ins  @sft S-,  S-.  S-1  _    
+  _    _    _    _    _    _    _    pgdn pgup _    _    _    _    _    
+  _    _    _    _    _    _    @nvl @nvd @nvu @nvr han  _    _    
+  _    _    _    _    _    _    ins  @sft S-,  S-.  @ex  _    
   _    _    _              _              _    _
 )
 
@@ -177,10 +236,10 @@
   _ 
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    7    8    9    _    _    _    _    _    _    _    _    _        
-  _    0    4    5    6    _    _    _    _    _    _    _    _        
-  _    _    1    2    3    _    _    @sft _    _    _    _        
-  _    _    _              _              @nnm _
+  @rsn @rsn 7    8    9    @rsn @rsn @rsn @rsn @rsn @rsn @rsn @rsn _        
+  @rsn 0    4    5    6    @rsn @rsn @rsn @rsn @rsn @rsn @rsn @rsn     
+  @rsn @rsn 1    2    3    @rsn @rsn @rsn _    _    _    @rsn     
+  @rsn _    @rsn           _              @snm _
 )
 
 (deflayer base
