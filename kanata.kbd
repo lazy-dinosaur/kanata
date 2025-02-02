@@ -1,20 +1,26 @@
 (defcfg
   concurrent-tap-hold yes
   delegate-to-first-layer yes
-  linux-dev-names-include (
-    "Asus Keyboard",
-    "Telink Wireless Gaming Keyboard"
+  ;; linux-dev-names-include (
+  ;;  "Asus Keyboard",
+   ;; "Telink Wireless Gaming Keyboard"
+ ;; )
+   linux-dev-names-exclude (
+    "ZMK Project LazyCorne Keyboard",
+    "Bastard Keyboards Dilemma Max",
   )
 )
+
 
 (deflocalkeys-linux
   kbd 202
   han 122
   prt 210
+  srlk 70
 )
 
 (defvar
-  tap-timeout   40
+  tap-timeout   200
   hold-timeout  150
   fast-timeout 65
   tt $tap-timeout
@@ -53,7 +59,7 @@
 
   scln (unshift scln)
 
-  fr, (fork , (unshift scln) (lsft rsft))
+  fr, (fork , (tap-hold-press $tt $ht @scln @scln) (lsft rsft))
   fr. (fork . (multi lsft scln) (lsft rsft))
 
   frlp (fork @lp @lt (lsft rsft))
@@ -63,11 +69,12 @@
 
   = (unshift =)
 
-  cw (caps-word-custom
+  cw (caps-word-custom-toggle
     2000
     (a b c d e f g h i j k l m n o p q r s t u v w x y z)
     (lsft bspc del = / - 6 1 2 3 4 5 7 8 9 0 [ ] , .) 
   )
+  vm (multi lctl rctl)
 
   osft (one-shot 800 lsft)
 
@@ -111,8 +118,9 @@
   bck (multi _ (layer-switch code))
 
   rsn (multi _ @rsym)
-
   ;; nav arrows
+
+  escc (tap-hold-press 200 $ht esc srlk)
 
   nvl (tap-hold-release-timeout 280 $ht left lctl home)
   nvd (tap-hold-release-timeout 280 $ht down lsft (multi lctl end))
@@ -169,84 +177,84 @@
   cio (tap-hold $tt $ht del del)
 
   ;; rtv
-  cuh (tap-hold $tt $ht (multi lsft 6) (multi lsft 6))
-  cij (tap-hold $tt $ht kp+ kp+)
-  cil (tap-hold $tt $ht (multi lsft 8) (multi lsft 8))
-  co; (tap-hold $tt $ht (multi lsft 7) (multi lsft 7))
+  cyh (tap-hold $tt $ht (multi lsft 6) (multi lsft 6))
+  cuj (tap-hold $tt $ht kp+ kp+)
+  cik (tap-hold $tt $ht (multi lsft 8) (multi lsft 8))
+  col (tap-hold $tt $ht (multi lsft 7) (multi lsft 7))
 
   ;; rbv
-  cjn (tap-hold $tt $ht (multi lsft -) (multi lsft -))
-  ckm (tap-hold $tt $ht kp- kp-)
-  ck. (tap-hold $tt $ht (unshift /) (unshift /))
-  cl/ (tap-hold $tt $ht (multi lsft \) (multi lsft \))
+  chn (tap-hold $tt $ht (multi lsft -) (multi lsft -))
+  cjm (tap-hold $tt $ht kp- kp-)
+  ck, (tap-hold $tt $ht (unshift /) (unshift /))
+  cl. (tap-hold $tt $ht (multi lsft \) (multi lsft \))
 
   ;;ltv
-  cwa (tap-hold $tt $ht (multi lsft 2) (multi lsft 2))
-  ces (tap-hold $tt $ht (multi lsft 3) (multi lsft 3))
-  ced (tap-hold $tt $ht (multi lsft 4) (multi lsft 4))
-  crf (tap-hold $tt $ht (multi lsft 5) (multi lsft 5))
+  cws (tap-hold $tt $ht (multi lsft 2) (multi lsft 2))
+  ced (tap-hold $tt $ht (multi lsft 3) (multi lsft 3))
+  crf (tap-hold $tt $ht (multi lsft 4) (multi lsft 4))
+  ctg (tap-hold $tt $ht (multi lsft 5) (multi lsft 5))
 
   ;; lbv
-  csz (tap-hold $tt $ht (unshift `) (unshift `))
-  cdx (tap-hold $tt $ht (unshift \) (unshift \))
-  cdc (tap-hold $tt $ht (unshift =) (unshift =))
-  cfv (tap-hold $tt $ht (multi lsft `) (multi lsft `))
+  csx (tap-hold $tt $ht (unshift `) (unshift `))
+  cdc (tap-hold $tt $ht (unshift \) (unshift \))
+  cfv (tap-hold $tt $ht (unshift =) (unshift =))
+  cgb (tap-hold $tt $ht (multi lsft `) (multi lsft `))
 )
 
 (defchordsv2
   ;; rmh 
-  (j k)  @clp         25 all-released (base disabled nav)
-  (k l)  @crp         25 all-released (base disabled nav)
-  ;;(l ;)  @cl;         25 all-released (base disabled)
+  (j k)  @clp         20 first-release (base disabled nav)
+  (k l)  @crp         20 first-release (base disabled nav)
+  ;;(l ;)  @cl;         20 first-release (base disabled)
 
   ;; rbh 
-  (m ,)  @cm,         25 all-released (base disabled)
-  (, .)  @c,.         25 all-released (base disabled)
+  (m ,)  @cm,         20 first-release (base disabled)
+  (, .)  @c,.         20 first-release (base disabled)
 
   ;; lth 
-  (w e)  @cwe         25 all-released (base disabled)
-  (e r)  @cer         25 all-released (base disabled)
+  (w e)  @cwe         20 first-release (base disabled)
+  (e r)  @cer         20 first-release (base disabled)
 
   ;; lmh 
-  ;;(a s)  @cas         25 all-released (base disabled)
-  (s d)  @csd         25 all-released (base disabled)
-  (d f)  @cdf         25 all-released (base disabled)
+  ;;(a s)  @cas         20 first-release (base disabled)
+  (s d)  @csd         20 first-release (base disabled)
+  (d f)  @cdf         20 first-release (base disabled)
 
   ;; lbh 
-  (x c) @cxc          25 all-released (base disabled)
-  (c v) @ccv          25 all-released (base disabled)
-  (x v) @cxv          25 all-released (base disabled)
+  (x c) @cxc          20 first-release (base disabled)
+  (c v) @ccv          20 first-release (base disabled)
+  (x v) @cxv          20 first-release (base disabled)
 
   ;; lth 
-  (u i) @cui          25 all-released (base disabled)
-  (i o) @cio          25 all-released (base disabled)
+  (u i) @cui          20 first-release (base disabled)
+  (i o) @cio          20 first-release (base disabled)
 
   ;; rtv
-  (u h) @cuh  25 all-released (base disabled)
-  (i j) @cij  25 all-released (base disabled)
-  (i l) @cil  25 all-released (base disabled)
-  (o ;) @co;  25 all-released (base disabled)
+  (y h) @cyh  20 first-release (base disabled)
+  (u j) @cuj  20 first-release (base disabled)
+  (i k) @cik  20 first-release (base disabled)
+  (o l) @col  20 first-release (base disabled)
 
   ;; rbv
-  (j n) @cjn 25 all-released (base disabled)
-  (k m) @ckm 25 all-released (base disabled)
-  (k .) @ck. 25 all-released (base disabled)
-  (l /) @cl/ 25 all-released (base disabled)
+  (h n) @chn 20 first-release (base disabled)
+  (j m) @cjm 20 first-release (base disabled)
+  (k ,) @ck, 20 first-release (base disabled)
+  (l .) @cl. 20 first-release (base disabled)
 
   ;; rbb
-   ;;(spc lalt) @spclalt 25 all-released (base disabled)
+   ;;(spc lalt) @spclalt 20 first-release (base disabled)
 
   ;;ltv
-  (w a) @cwa 25 all-released (base disabled)
-  (e s) @ces 25 all-released (base disabled)
-  (e d) @ced 25 all-released (base disabled)
-  (r f) @crf 25 all-released (base disabled)
+  (w s) @cws 20 first-release (base disabled)
+  (e d) @ced 20 first-release (base disabled)
+  (r f) @crf 20 first-release (base disabled)
+  (t g) @ctg 20 first-release (base disabled)
 
   ;; lbv
-  (s z) @csz  25 all-released (base disabled)
-  (d x) @cdx  25 all-released (base disabled)
-  (d c) @cdc  25 all-released (base disabled)
-  (f v) @cfv  25 all-released (base disabled)
+  (s x) @csx  20 first-release (base disabled)
+  (d c) @cdc  20 first-release (base disabled)
+  (f v) @cfv  20 first-release (base disabled)
+  (g b) @cgb  20 first-release (base disabled)
 )
 
 (defsrc
@@ -261,12 +269,12 @@
 
 (deflayer code
   @dkb
-  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  del
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  @vm
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    bspc del  \
-  @cap @a   @s   @d   @f   g    h    @j   @k   @l   @'   @sft ret
-  @sft z    x    c    v    b    n    m    @fr, @fr. @fr/ han 
-  han  lctl lmet           @spc           @hnm lctl
+  @cap @a   @s   @d   @f   g    h    @j   @k   @l   @'   @hnm ret
+  lctl z    x    c    v    b    n    m    @fr, @fr. @fr/ @sft
+  lalt lmet @sft           @spc           @sft rctl
 )
 
 (deflayer nav
@@ -274,7 +282,7 @@
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    pgdn pgup _    prt  _    _    _    
-  _    _    _    _    _    _    @nvl @nvd @nvu @nvr han  _    _    
+  srlk lmet lalt lsft lctl _    @nvl @nvd @nvu @nvr _    _    _    
   _    _    _    _    _    _    ins  @sft S-,  S-.  @ex  _    
   _    _    _              _              _    _
 )
@@ -291,7 +299,7 @@
 
 (deflayer base
   @code
-  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  del
+  @escc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  @vm
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
   caps a    s    d    f    g    h    j    k    l    ;    '    ret
