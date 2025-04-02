@@ -1,0 +1,318 @@
+(defcfg
+  concurrent-tap-hold yes
+  delegate-to-first-layer yes
+  ;; linux-dev-names-include (
+  ;;  "Asus Keyboard",
+   ;; "Telink Wireless Gaming Keyboard"
+ ;; )
+   linux-dev-names-exclude (
+    "ZMK Project LazyCorne Keyboard",
+    "Bastard Keyboards Dilemma Max",
+  )
+)
+
+
+(deflocalkeys-linux
+  kbd 202
+  han 122
+  prt 210
+  srlk 70
+)
+
+(defvar
+  tap-timeout   200
+  hold-timeout  150
+  fast-timeout 65
+  tt $tap-timeout
+  ht $hold-timeout
+  ft $fast-timeout
+)
+
+(defvirtualkeys
+  vsft lsft
+  vnum (layer-while-held num)
+)
+
+(defalias 
+
+  dkb (layer-switch disabled)
+  def (layer-switch base)
+  code (layer-switch code)
+
+  num (layer-while-held num)
+  nav (layer-while-held nav)
+
+  han (tap-hold-press $tt $ht han @num)
+  cap (tap-hold-press $tt $ht esc lctl)
+  spc (tap-hold-press $tt 125 spc @nav)
+
+
+  lt (multi lsft ,)
+  gt (multi lsft .)
+  lp (multi lsft 9)
+  rp (multi lsft 0)
+
+  qt (multi lsft /)
+  ex (multi lsft 1)
+
+  fr/ (fork @qt @ex (lsft rsft))
+
+  scln (unshift scln)
+
+  fr, (fork , (tap-hold-press $tt $ht @scln @scln) (lsft rsft))
+  fr. (fork . (multi lsft scln) (lsft rsft))
+
+  frlp (fork @lp @lt (lsft rsft))
+
+  frrp (fork @rp @gt (lsft rsft))
+
+
+  = (unshift =)
+
+  cw (caps-word-custom-toggle
+    2000
+    (a b c d e f g h i j k l m n o p q r s t u v w x y z)
+    (lsft bspc del = / - 6 1 2 3 4 5 7 8 9 0 [ ] , .) 
+  )
+  vm (multi lctl rctl)
+
+  osft (one-shot 800 lsft)
+
+  sft (tap-dance $ht (@osft @cw))
+  vft (tap-dance $ht (@osft @cw))
+
+  pnm (on-press press-virtualkey vnum)
+  rnm (on-press release-virtualkey vnum)
+
+  psf (on-press press-virtualkey vsft)
+  rsf (on-press release-virtualkey vsft)
+
+  tnum (multi 
+    (on-press press-virtualkey vnum)
+    (on-release release-virtualkey vnum)
+  )
+
+  tsym (multi
+    (on-press press-virtualkey vsft)
+    (on-release release-virtualkey vnum)
+    (on-release release-virtualkey vsft)
+  )
+
+  psym (multi 
+    (on-press press-virtualkey vnum)
+    (on-press press-virtualkey vsft)
+  )
+
+  rsym (multi 
+    (on-press release-virtualkey vnum)
+    (on-press release-virtualkey vsft)
+  )
+
+  hnm (tap-hold-press $tt $ht @pnm @num)
+  nnm (tap-hold-press $tt $ht @psf @tsym)
+
+  snm (tap-hold-press $tt $ht @rnm @tsym)
+
+  ;;snm (fork @nnm @rsym (lsft rsft))
+
+  bck (multi _ (layer-switch code))
+
+  rsn (multi _ @rsym)
+  ;; nav arrows
+
+  escc (tap-hold-press 200 $ht esc srlk)
+
+  nvl (tap-hold-release-timeout 280 $ht left lctl home)
+  nvd (tap-hold-release-timeout 280 $ht down lsft (multi lctl end))
+  nvu (tap-hold-release-timeout 280 $ht up lalt (multi lctl home))
+  nvr (tap-hold-release-timeout 280 $ht right lmet (multi end))
+
+  a (tap-hold-release-keys 280 $ht a lmet (q w e r t g z x c v b))
+  s (tap-hold-release-keys 280 $ht s lalt (q w e r t g z x c v b))
+  d (tap-hold-release-keys 280 $ht d lsft (q w e r t g z x c v b))
+  f (tap-hold-release-keys 280 $ht f lctl (q w e r t g z x c v b))
+
+  0 (tap-hold-release-keys 280 $ht 0 (multi _ @rsym) (q w e r t g z x c v b))
+  4 (tap-hold-release-keys 280 $ht 4 lalt (q w e r t g z x c v b))
+  5 (tap-hold-release-keys 280 $ht 5 lsft (q w e r t g z x c v b))
+  6 (tap-hold-release-keys 280 $ht 6 lctl (q w e r t g z x c v b))
+
+  j (tap-hold-release-keys 280 $ht j lctl (y u i o p [ ] h ' n m , . /))
+  k (tap-hold-release-keys 280 $ht k rsft (y u i o p [ ] h ' n m , . /))
+  l (tap-hold-release-keys 280 $ht l lalt (y u i o p [ ] h ' n m , . /))
+  ' (tap-hold-release-keys 280 $ht ' lmet (y u i o p [ ] h ' n m , . /))
+)
+
+;; combos
+(defalias
+  copy (multi lctl ins) 
+  paste (multi lsft ins)
+  cut (multi lctl x)
+
+  ;; rmh 
+  clp (tap-hold $tt $ht @frlp (multi lctl lsft))
+  crp (tap-hold $tt $ht @frrp (multi lsft lalt))
+  cl; (tap-hold $tt $ht @sft  (multi rmet lalt))
+
+  ;; rbh 
+  cm, (tap-hold $tt $ht [ [)
+  c,. (tap-hold $tt $ht ] ])
+
+  ;; lth 
+  cwe (tap-hold $tt $ht (multi @rsym esc) (multi @rsym esc))
+  cer (tap-hold $tt $ht (multi @rsym ret) (multi @rsym ret))
+
+  ;; lmh 
+  csd (tap-hold $tt $ht tab   (multi lalt lsft))
+  cdf (tap-hold $tt $ht han   (multi lsft lctl))
+  cas (tap-hold $tt $ht @sft  (multi lmet lalt))
+
+  ;; lbh
+  cxc (tap-hold $tt $ht @copy @copy)
+  ccv (tap-hold $tt $ht @paste @paste) 
+  cxv (tap-hold $tt $ht @cut @cut)
+
+  ;; lth 
+  cui (tap-hold $tt $ht bspc bspc)
+  cio (tap-hold $tt $ht del del)
+
+  ;; rtv
+  cyh (tap-hold $tt $ht (multi lsft 6) (multi lsft 6))
+  cuj (tap-hold $tt $ht kp+ kp+)
+  cik (tap-hold $tt $ht (multi lsft 8) (multi lsft 8))
+  col (tap-hold $tt $ht (multi lsft 7) (multi lsft 7))
+
+  ;; rbv
+  chn (tap-hold $tt $ht (multi lsft -) (multi lsft -))
+  cjm (tap-hold $tt $ht kp- kp-)
+  ck, (tap-hold $tt $ht (unshift /) (unshift /))
+  cl. (tap-hold $tt $ht (multi lsft \) (multi lsft \))
+
+  ;;ltv
+  cws (tap-hold $tt $ht (multi lsft 2) (multi lsft 2))
+  ced (tap-hold $tt $ht (multi lsft 3) (multi lsft 3))
+  crf (tap-hold $tt $ht (multi lsft 4) (multi lsft 4))
+  ctg (tap-hold $tt $ht (multi lsft 5) (multi lsft 5))
+
+  ;; lbv
+  csx (tap-hold $tt $ht (unshift `) (unshift `))
+  cdc (tap-hold $tt $ht (unshift \) (unshift \))
+  cfv (tap-hold $tt $ht (unshift =) (unshift =))
+  cgb (tap-hold $tt $ht (multi lsft `) (multi lsft `))
+)
+
+(defchordsv2
+  ;; rmh 
+  (j k)  @clp         20 first-release (base disabled nav)
+  (k l)  @crp         20 first-release (base disabled nav)
+  ;;(l ;)  @cl;         20 first-release (base disabled)
+
+  ;; rbh 
+  (m ,)  @cm,         20 first-release (base disabled)
+  (, .)  @c,.         20 first-release (base disabled)
+
+  ;; lth 
+  (w e)  @cwe         20 first-release (base disabled)
+  (e r)  @cer         20 first-release (base disabled)
+
+  ;; lmh 
+  ;;(a s)  @cas         20 first-release (base disabled)
+  (s d)  @csd         20 first-release (base disabled)
+  (d f)  @cdf         20 first-release (base disabled)
+
+  ;; lbh 
+  (x c) @cxc          20 first-release (base disabled)
+  (c v) @ccv          20 first-release (base disabled)
+  (x v) @cxv          20 first-release (base disabled)
+
+  ;; lth 
+  (u i) @cui          20 first-release (base disabled)
+  (i o) @cio          20 first-release (base disabled)
+
+  ;; rtv
+  (y h) @cyh  20 first-release (base disabled)
+  (u j) @cuj  20 first-release (base disabled)
+  (i k) @cik  20 first-release (base disabled)
+  (o l) @col  20 first-release (base disabled)
+
+  ;; rbv
+  (h n) @chn 20 first-release (base disabled)
+  (j m) @cjm 20 first-release (base disabled)
+  (k ,) @ck, 20 first-release (base disabled)
+  (l .) @cl. 20 first-release (base disabled)
+
+  ;; rbb
+   ;;(spc lalt) @spclalt 20 first-release (base disabled)
+
+  ;;ltv
+  (w s) @cws 20 first-release (base disabled)
+  (e d) @ced 20 first-release (base disabled)
+  (r f) @crf 20 first-release (base disabled)
+  (t g) @ctg 20 first-release (base disabled)
+
+  ;; lbv
+  (s x) @csx  20 first-release (base disabled)
+  (d c) @cdc  20 first-release (base disabled)
+  (f v) @cfv  20 first-release (base disabled)
+  (g b) @cgb  20 first-release (base disabled)
+)
+
+(defsrc
+  kbd
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  del
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rctl
+)
+
+(deflayer code
+  @dkb
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  @vm
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    bspc del  \
+  @cap @a   @s   @d   @f   g    h    @j   @k   @l   @'   @hnm ret
+  lctl z    x    c    v    b    n    m    @fr, @fr. @fr/ @sft
+  lalt lmet @sft           @spc           @sft rctl
+)
+
+(deflayer nav
+  _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    pgdn pgup _    prt  _    _    _    
+  srlk lmet lalt lsft lctl _    @nvl @nvd @nvu @nvr _    _    _    
+  _    _    _    _    _    _    ins  @sft S-,  S-.  @ex  _    
+  _    _    _              _              _    _
+)
+
+(deflayer num
+  _ 
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  @rsn @rsn 7    8    9    @rsn @rsn @rsn @rsn @rsn @rsn @rsn @rsn _        
+  @rsn @rsn @4   @5   @6   @rsn @rsn @rsn _    @rsn @rsn _    @rsn     
+  _    @rsn 1    2    3    @rsn @rsn @rsn _    _    _    @rsn     
+  @rsn @rsn @rsn           @0             @snm _
+)
+
+(deflayer base
+  @code
+  @escc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  @vm
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            han  rctl
+)
+
+(deflayer disabled
+  @def
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX             XX             XX   XX
+)
