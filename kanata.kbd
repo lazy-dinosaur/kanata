@@ -52,6 +52,9 @@
   lp (multi lsft 9)
   rp (multi lsft 0)
 
+  fr- (fork kp- (multi lsft -) (lsft rsft))
+  fr+ (fork kp+ @eq (lsft rsft))
+
   cw (caps-word-custom-toggle
     2000
     (a b c d e f g h i j k l m n o p q r s t u v w x y z)
@@ -80,7 +83,7 @@
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
   @cap @a   @s   @d   @f   g    h    @j   @k   @l   @;   '    ret
   @sft z    x    c    v    b    n    m    ,    .    /    @sft
-  lctl lmet lalt           @spc            @han rctl
+  lctl lmet lalt           @spc           @han rctl
 )
 
 (deflayer nav
@@ -97,9 +100,9 @@
   _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    @grv 7    8    9    kp+  _    _    _    _    _    @lp  @rp  _    
-  _    @wv  4    5    6    kp-  _    _    _    _    @cln @eq  _    
-  _    @und 1    2    3    @eq  _    _    @lt  @gt  \    _    
+  _    grv  7    8    9    _    _    _    _    _    _    @lp  @rp  _    
+  _    @fr+ 4    5    6    _    _    _    _    _    @cln @eq  _    
+  _    @fr- 1    2    3    _    _    _    @lt  @gt  \    _    
   _    _    _              0              _    _
 )
 
